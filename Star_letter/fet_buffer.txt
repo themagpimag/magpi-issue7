@@ -1,0 +1,19 @@
+Using an FET buffer stage for the GPIO bus.
+
+Following on from the issue 4 article on transistors, I would like to describe my use of the 2N7000 Enhancement FET. I used this device only because I had some to hand from previous projects. Other types could be better suited as I will explain later.
+Their use provides some interesting behaviours to buffer circuits which may prove beneficial in some applications.
+The data sheet can be found here. 
+Now, the FET's Gate is, in simplistic terms, insulated from the Source and Drain connections. Only the voltage relative to the Source (Vgs) is important. Once again I state in simplistic terms. Even if the GPIO pin is configured as an INPUT with the pi's own Pull Up or Down resistors active, the FET will change state due to the extremely high input impedance of the FET.
+From the data-sheet it can been seen that at around Vgs of 2.5v at room temperature the device starts to conduct. By 3.3v it is can certainly operate an LED or small relay. As I stated above other FETs may be more suitable in their Vgs characteristics.
+Now consider the following application: Test all inputs at start-up. Very simple code can be written to test all used inputs at start-up. By pulling the inputs up then down and testing for the condition in software and visually for an led flash one can verify both the wiring and the buffer FET. This may seem trivial, but replace the LED with the start circuit for some equipment which must be started in a correct sequence. As a maintenance engineer I like diagnostics to make my life easier!
+It also has the advantage that one GPIO can be used for both input and output with, in Fig 1s case a visual indication of button press too.
+This is my first ever stab at a python script. Its bound to be very inelegant. But it just about does what we need. It has been tested in python3 only. Try running it with a finger on the button to simulate an input being stuck.
+Of course one could arrange the switch to pull the input up. That way the LED would not be on all the time. Script adjustments will be necessary.
+With a change in resistor values the FET status can remain unchanged if the button is pressed when the GPIO is set as output. 
+Eg: if R1 is 330Ω and the switch is connected through about 4k7Ω the Vgs will still be in excess of 3.0v with the button pressed if GPIO pin is output set high.
+2N7000s are available for 10p each. 
+Other, superb devices are now available. Some like the 2SK4043LS can switch pulses of 80A with as little as 2.5v Vgs. A single transistor could never do that as driven by the PI.
+And the 2SK3018, a surface mount device designed for small Vgs conditions like here in the PI.
+There is a lot to be said for the FET in this application.
+
+

@@ -1,0 +1,76 @@
+
+Making code development faster
+
+make is a central part of building packages of compiled code or documentation on a LINUX system.  When make runs it reads one or more text files containing targets and dependencies.  The targets are only executed if a file is not present or is newer than the output file.  The syntax also allows multiple dependencies, such that some files are required to be built before others.  Starting with a first example,
+
+# Create newFile.txt if it is not present
+newFile.txt:
+        touch newFile.txt
+
+Similar to scripting languages, comments start with a hash or pound character (#).  The target newFile.txt has no spaces or tabs in front of it and is followed by a colon.  Dependencies for the target can be added after the colon.  The actions are given on lines after the target name and must be prefixed by a tab character.  If white spaces are used make will report an error.
+
+By default make looks for a file called Makefile.  Therefore, use nano (described in the issue 3 C cave article) to create a file called Makefile containing the example above.  Then type make
+
+The first time make is typed the make command executes the target, which uses the touch command to create an empty file of the right name.  The second time make is typed it, it finds that the file already exists and no action is needed.
+
+For examples with dependencies, a small C example can be used.  In a new directory, create three files: main.c
+
+#include "printString.h"
+int main() {
+  printString();
+  return 0;
+}
+
+printString.c
+
+#include <stdio.h>
+void printString() {
+  printf("Built with make!\n");
+}
+
+and printString.h
+
+void printString();
+
+Now create a new file called Makefile containing,
+
+printString: main.o printString.o
+        gcc -o printString main.o printString.o
+
+main.o:
+	gcc -c main.c
+
+printString.o:
+        gcc -c printString.c
+
+clean:
+        rm -f *.o
+
+This time typing make will cause each .c file to be compiled into a .o file.  Then the .o files are linked together to form an executable called printString.  The printString target is the first target in the file and is  therefore the default target.  When make runs it checks the dependencies of printString, which are that the main.o and printString.o files exist and are not newer than the target printString.  If the files do not exist then the target to make the file is run.  Any target other than the default target can be run by typing the target name after the make command, e.g. make clean
+
+Writing make files where each of the file names needs to be specified can rapidly become very time consuming.  Automatic variables can be used instead of explicitly specified targets,
+
+printIt: main.o printString.o
+        gcc -o $@ $^
+
+%.o: %.c
+        gcc -c $< -o $@
+
+clean:
+        rm -f *.o
+
+This Makefile has exactly the same as action as the previous one.  The automatic variable $@ is the target name, $^ are the names of all of the dependencies, and $< is the name of the first prerequisite.  For each .o file required by the default target, make tries the wildcard %.c.  If the .c file is missing make will report an error.
+
+Wildcards can also be used to define a list of objects from the list of .c files in the present working directory,
+
+OBJECTS = $(patsubst %.c,%.o, $(wildcard *.c))
+
+printIt: $(OBJECTS)
+        gcc -o $@ $^
+
+%.o: %.c
+        gcc -c $< -o $@
+
+where OBJECTS is a variable.  In this case all of the .c files in the present working directory are used to build an executable called printIt.  Try using touch to update each file time stamp and then re-run make to see what happens.
+
+Make files can have many layers of dependencies.  For software distribution on multiple platforms, the Makefiles are typically generated from templates using the autoconf tool.

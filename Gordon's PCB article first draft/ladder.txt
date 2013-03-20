@@ -1,0 +1,177 @@
+
+Draft Copy
+
+====================================
+
+The Raspberry Ladder Board
+
+The Raspberry ladder board is a kit of parts intended to be used as an
+introduction to soldering and GPIO programming on the Raspberry Pi.
+
+The ladder board is based on my original ladder game which I made
+earlier this year on a breadboard, details of which can be found here:
+https://projects.drogon.net/raspberry-pi/gpio-examples/ladder-game/
+
+This version has been modified to make it more useful for other projects
+and hopefully will encourage you to write your own little games and
+simulations. The software that I'll be providing will be a version of
+my original ladder game, my Tuxx crossing simulator and a new "Simon
+Says" game.
+
+The kit includes a professionally made PCB, 8 standard LEDs (2 each of
+blue, green, yellow and red), 2 smaller LEDs (green and red), 4 push
+button switches, 14 resistors for the LEDs and switches and a short
+(ready-made) ribbon cable and IDC connectors to connect the ladder board
+to your Raspberry Pi.
+
+You will need basic soldering equipment, (soldering iron, some solder,
+a pair of wire cutters) and some time to assemble the board. Additionally
+some PCB cleaner spray may be useful once it's all finished, but it's
+not essential. If you are comfortable with soldering then it should not
+take you more than 10-15 minutes to fully assemble the board, but if not,
+then it can be done in stages and you can even test each stage as you go.
+
+You can buy the complete kit including PCB from Tandy for £7.00
+inc. postage. XXXX Link to follow XXXX
+
+Soldering the PCB version:
+
+Soldering is not difficult, but requires practice. Before you start,
+please read this comic strip:
+
+http://mightyohm.com/soldercomic
+
+Before starting, have a look at the PCB and the components - don't remove
+the components from their packs at this stage - the Tandy kit will be
+packed in the bags in the order that you need them, but see if you can
+identify everything first. Study the photo of the fully assembled board
+to see what to expect.
+
+Check the PCB - Look for any obvious signs of damage and identify where
+the components are fitted. The white printed symbols will help. The
+resistors have little rectangles, the switches bigger rectangles (almost
+square), and the LEDs circles with a flat side to them. There is a short
+row of 5 holes which are not used in this project and 2 longer rows of
+holes which are used for the ribbon cable connector.
+
+First we need to identify which resistors are which. In the kit there
+are 2 types, 220Ω and 1000Ω. The 220Ω ones are identified by their
+colour banding - Red, Red, Brown and the 1000Ω ones are Brown, Black,
+Red. However if you are confused, then there are 10 x 220Ω resistors
+and 4 x 1000Ω resistors - just count them to see which is which.
+
+Start with the 4 x 1000Ω resistors. Bend the legs at the end of the
+resistor and insert them into the PCB in the 4 locations. Resistors can
+go either way, but it looks better if you make them all line up the same
+way. Push the leads of the resistors through their holes and bend the
+leads outwards as shown on page 4 of the comic above.
+
+I like to put all 4 in at once then use something like blu-tak to hold
+them in-place when I turn the board over to solder, but you may wish to
+do them one at a time to start with.
+
+Soldering: You need 2 hands, so make sure the board is secure. It's also a
+good idea to be in a well-lit location so you can see what your doing! See
+the video for more ideas, however in-general, touch the soldering iron to
+both the lead of the component and the pad at the same time, wait 1 or 2
+seconds, touch the solder to the pad or the very end of the soldering iron
+- it should flow immediately and fill all the gaps. Remove the solder,
+and then (quite important this bit!) Keep the soldering iron there for
+another second or 2.
+
+Most components will be damaged by excess heat, but do not be afraid to
+keep the heat there for up to 10 seconds if required. With practice you
+should be able to do a solder joint in about 5 seconds. Iron to pad and
+component lead, pause, solder until it flows, pause, remove iron. If
+you feel it's not a good join, then wait a moment for it to cool down
+and try again.
+
+Make sure your soldering iron is clean each time you pick it up - use
+a damp sponge or the newer "dry wipe" systems that look like a tub of
+brassy springs.
+
+Once you have soldered in your first components (or first 4!) then it's
+time to clip the leads short. Again, this is a 2-hand job and you must
+hold the end of the lead when you cut it - if you don't, then it will go
+flying off and when it hits you it will hurt. (Additionally your partner,
+mother, etc. will not be happy cleaning up the mess of tiny little spikes
+of metal!) Hold the end, and cut right next to the solder join and put
+in the bin.
+
+Once you have the first 4 resistors soldered in, you can progress
+to the 220Ω resistors. Start with the 2 near the top of the board,
+then the other 8 down the side.
+
+Next is the switches. These should hold themselves in the board while
+soldering, but make sure you put them in the right way round - they are
+slightly rectangular, so if they don't seem to fit, then rotate them a
+quarter of a turn and try again.
+
+Now the LEDs. Hopefully by now you should be getting the hang of
+soldering. I left the LEDs until now for 2 reasons - firstly it's
+generally better to solder the low components first, then the taller
+ones, and also to give you lots of practice soldering resistors and
+switches which are more resistant to overheating than LEDs are. You
+should still be OK for up to 10 second with the LEDs, but hopefully by
+now you should be a little quicker and more confident.
+
+The LEDs are sensitive to which way they go in, so do look at them
+carefully. The have a flat on one side and this corresponds to the flat
+on the image on the PCB. The flat side always goes to the negative side
+if the circuit, and the other side (which has a longer leg) always goes
+to the positive side of the circuit.
+
+Take your time when soldering these in - try to make sure they all sit
+flat on the PCB and that they line-up in a neat line.
+
+Finally the GPIO connector. Fit into the board, secure it, solder one pin
+then check it before soldering the rest. You may wish to go down one
+long line, then turn the board and go down the other line.
+
+And we're done. Hopefully your finished board will look something like
+this one:
+
+Now it's time to connect it up to a Raspberry Pi and run the test
+software.
+
+Note: when you first turn on your Raspberry Pi, or reboot it with the
+ladder board connected, the 2 smaller LEDs may be glowing dimly. This
+is to be expected as they're being supplied with current from the Pi's
+on-board I2C pull-up resistors that form part of the I2C bus.
+
+The test software uses the wiringPi gpio command, so you need wiringPi
+installed first.
+
+For wiringPi (if you don't already have it):
+
+  cd
+  git clone git://git.drogon.net/wiringPi
+  cd wiringPi
+  ./build
+
+for the raspberry ladder software:
+
+  cd
+  git clone git://git.drogon.net/ladder
+  cd ladder
+
+and to run the test program:
+
+  ./ladderTest.sh
+
+It should take you through a few simple steps to check that your board
+is working properly.
+
+A slightly modified version of the Tux Crossing program is also
+there - run it with:
+
+  ./tuxx.sh
+
+and when it's initialised, push the bottom button to start the sequence,
+but more software and details next month!
+
+Full documentation is supplied in the README file about how the LEDs are
+connected up, and the ladderTest program is a bash script which you may
+copy and edit as required, you may also look at some of the GPIO example
+programs supplied with the wiringPi package too, but the real fun starts
+next month when we write some more programs for it.

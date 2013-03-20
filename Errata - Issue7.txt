@@ -1,0 +1,72 @@
+Page 1 Update with Barcodes
+DONE>> Page 2 (Welcome / editorial)
+
+	“sheilds” should be “shields”
+	The font looks awful and is not really legible
+
+DONE>> Page 3 (Contents)
+
+	“Solding irons at the ready” should be “Soldering irons at the ready”
+
+P4 ( Pi & Arduino)
+
+	“5 mm red LED” does not specify the LED accurately enough, several types are available with differing electrical parameters.
+
+Page5:
+2nd table (LED) - A0 should be GND!
+Details:
+Maybe it's my eyesight, but it looks like there's a typo on Page 5 of issue 7. I'm pretty sure the LED should be between D3 and GND as per the picture. The table says D3 and A0, which might confuse a few people.
+I built the 5V switch mode PSU you had in a previous issue and it works great!
+Keep up the good work. Regards,
+Jonathan Pallant
+
+P8 (Solar PI)
+
+“there is no leakage disharge” Should read “there is no leakage discharge” (“Estimated Charge Times” box)
+
+P9 (Solar PI continued)
+“can be used in many suitations remotely” should be “can be used in many situations remotely”
+
+
+Page13:
+Caption refers to pin 7, but shouldn't.
+Detail:
+Just saw there's a small mistake in the article about "Interrupts and Other Activities with GPIO Pins" in issue 7 of The MagPi.
+
+The caption mentioned under the GPIO layout difference image between rev1.0 and rev2.0, given on page 13, mentions there are 4 differences in pin (re)location between the two revisions.
+
+However, I only see 3 differences: pins 3, 5 and 13.  Pin 7 is mistakenly mentioned as different too while -according the drawing- pin 7 was and still is GPIO4.
+Unless the drawing itself is wrong, of course...
+
+P24 (Make)
+
+It does mention that there should be a tab character for action lines, but I think this is not clear enough. When I first started using Make, by far the most confusing thing was the significance of the tabs/spaces.
+
+If we mention Make again, I think it would be good to highlight this in a bright yellow box or something.
+>>No update in issue.
+
+P26 (C++ cache)
+	“C++ programming language - one of the most popular used today”
+If I was a Wikipedian, I’d definitely write [citation required]. If we make sweeping generalisations such as this, it would probably help pedants like me to back them up with (some) evidence.
+>>No update in issue.
+
+C++ cache audience?
+
+I find the “tone of voice” really strange in this article. We first introduce C++ by saying “it’s more advanced”, but then talk to the reader as if they’re a child. Was this intended?
+>>No update in issue.
+
+
+P30 (The Python pit)
+
+Naming functions starting with “fn” is not conventional in Python code and I have not seen it anywhere else (for example, in a PIP or in the Python library). I suggest that it’s not normal practice and shouldn’t be encouraged.
+There are several places where semicolons are at the end of a line. This is not necessary in Python and is not normal practice. (Example: pygame.display.update(); )
+For this line, consider using the formatting operator  (%) instead of concatenation: coordText = '('+str(nSX)+','+str(nSY)+')-('+str(nEX)+','+str(nEY)+')'
+The formatting operator is more “typical python practice”
+It is less ugly
+>>No update in issue.
+
+P32 (Letters & Question time)
+
+The magpie background is potentially distracting and some of the text may overlap it (Correspondent John’s name). Consider changing this in another issue (The layout is better in issue 8, but this may be by luck rather than judgement).
+>>No update in issue.
+

@@ -1,0 +1,29 @@
+File>Document Setup>Document Information
+Title:
+The MagPi Issue 7 November 2013
+
+Author:
+The MagPi Team
+
+Keywords:
+
+
+Description:
+Page 	Article
+1	Cover
+2	Editorial & Credits
+3	Contents
+4-6	Pi And Arduino In Action
+7	Competition
+8-9	Solar Pi
+10-11	Gordon's Ladder Board
+12-15	GPIO and Interrupts
+16-17	Raspbian, The Story So Far
+18-20	Turbo Settings For Maximum Performance
+21	Events
+22-23	Pi-Evolution
+24-25	The Basics of GNU Make
+26-27	Welcome to the C++ Cache
+28-29	The Scratch Patch
+30-31	The Python Pit
+32	Feedback & Disclaimer

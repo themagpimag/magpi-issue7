@@ -1,0 +1,83 @@
+Contents and workplan.	Last Update: 16/10/12 - Ash
+
+01 	Cover 			- TZJ (Chris)			Expected Date of recipt - ???
+	
+
+
+02 	Editorial 		- TZJ				In dropbox
+
+03 	Contents 		- TZJ				In dropbox
+
+
+04	Arduino 		- Lix (Nick)			In dropbox
+
+05	Arduino 		- Lix (Nick) 
+
+06	Arduino 		- Lix (Nick)
+
+
+
+07	Competition 		- Ian 				In dropbox
+
+08	Solar Pi 		- Meltwater  			In dropbox
+09 	Solar Pi		- Meltwater
+
+
+
+10	? PCB			- Sam & Gordon			Expected Date of recipt - ???
+
+11	? PCB			- Sam & Gordon
+ 
+
+
+12	GPIO and Interrupts 	- Alan				New pictures in email, article in dropbox
+13	GPIO and Interrupts	- Alan
+
+14	GPIO and Interrupts	- Alan
+
+15	GPIO and Interrupts	- Alan
+
+
+
+16	Raspbian interview 	- Colin with Mike & Plugwash	In dropbox
+
+17	Raspbian interview 	- Colin with Mike & Plugwash
+
+
+
+18	Turbo			- Matthew & Ian			In dropbox			
+19	Turbo			- Matthew & Ian
+20	Turbo			- Matthew & Ian
+
+
+21	Events page		- Alan				In dropbox				
+
+
+
+22	512MB Pi		- Jaseman (Jase)		Awaiting background image then finished
+23	512MB Pi		- Jaseman (Jase)
+
+
+
+24	Makefile intro	- Will				        In dropbox
+
+25	Makefile	- Will
+
+
+
+26	C++			- Alex Kirr & Aaron		Aaron to layout - To be layed out ASAP 
+
+27	C++			- Alex Kirr & Aaron
+
+
+28	Scratch patch 		- Mark				In dropbox - PDF in scratch folder in issue 7 folder
+29  	Scratch patch 		- Mark
+
+
+
+30 	Python pit 		- Colin				In dropbox
+31	Python pit 		- Colin
+ 
+
+
+32 	Back page 		- Ian				In dropbox

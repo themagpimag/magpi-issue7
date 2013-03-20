@@ -1,0 +1,116 @@
+Q Why did you choose to start Raspbian?
+
+I have been always been a Debian user and reading about the Raspberry Pi in January I noticed that the Foundation was planning to use Fedora. As my experience in using Linux on ARM processors has been Debian I was wondering if I could build Debian for the Pi. It puzzled me that no-one within the Debian community was stepping up to the plate to port to the Pi. For a long time I had wanted to learn how to build an operating system and also to contribute something back to the Debian community and Raspbian gave me this opportunity.
+
+I realised it was going to take a lot of resources, time and effort to create Raspbian. In January I had the time and inclination to provide a long-term Debian alternative in the Pi world. I started asking questions on the forums to understandwhat was involved in making a custom version of Debian Linux for the Pi and it unfolded from there. There was not any plan to make the "official" version of Linux for the Raspberry Pi. This is something that just came about along the way.
+
+Raspbian is a joint effort between myself and Peter Green (Plugwash) who is a Debian developer.
+
+Q Why the Raspberry Pi as there are other relatively low cost boards available?
+
+I have a high level of personal interest in a very inexpensive Linux-based systems and I am very encouraged by the Raspberry Pi Foundation demonstrating the desire and need in the market for a system such as the Raspberry Pi. Ultimately my interest is in seeing these systems get down to a $5-$10 price point. It may take a few years to get there but things could get a lot more interesting in this world if there was large scale access to very cheap but relatively sophisticated computing such as  the Raspberry Pi.
+
+Q3 How did you go from having a working build of Raspbian to being the official OS for the Raspberry Pi Foundation?
+
+It was around the middle of June and Peter Green and I were well under way on Raspbian before I even started getting hints that the Foundation were looking starting to move from their decision around Fedora back to Debian, and more specifically Raspbian. I had already created a demonstration image of Debian with hardfloat very early on and sent it to Dom[XXXX CHECK XXXX] to have him test it out. This was just a proof of concept around April. Then there was a tremendous amount of work up to June. I had no insight into Fedora and as far as I knew that was the path the Foundation was on. My expectations were more along creating an alternative to Fedora. I thought maybe 10-20% of users would want to use this just because of the strength of the Debian community. I didn't intend for Raspbian to be the "official" Linux port on RPi. As the project started to gain momentum and I was keeping track of package building, which was at the rate of about 2500 per week, people started getting more enthusiastic and saying they were hoping the Foundation was going to choose Debian. I knew the Foundation were aware of Raspbian via the forums and I thought that if they thought it was worthwhile they will make a choice to use Raspbian.	
+
+[18:45] Qx The Foundation are clearly keen on the Raspberry Pi being used in as many different and interesting ways as possible. Do you think that Raspbian has acted as a catalyst to make this possible especially given that the Foundation and their Raspbian image are very much set up from an educational point of view?
+
+What was the process to go from having an operating system to having a full educational distribution?
+I was not even really part of this. 
+
+Q4 How do Raspbian and the Foundation's release differ?
+
+It may help to make it clear exactly what Raspbian is. Raspbian is essentially a recompilation of all of the packages that comprise Debian ARM Wheezy hardfloat with the compilation settings tuned to meet the requirements of the ARMv6 processor in the Raspberry Pi. Hence we were using the kernel work coming out of the Foundation unchanged. We were able to do this because the binary interfaces into the kernel do not have any floating point components. Peter Green and I did not have to do much work with the kernel. That saved a lot of effort and enabled us to concentrate on the recompilation of 98% of the packages and seeing what we could do to get the remainder to built. 
+
+
+[22m] The Foundation's Raspbian image was the work of Foundation. I worked quite a bit with Alex Bradbury, the Foundation's lead developer, noting however that we were not much involved wih the reference image itself. Since Raspbian was essentially a clone of Debian he took almost the same exact scripts, tweaked them and used them to build a mirror image of what he had built for Debian but this time for Raspbian. I think he was pleased to see that we were closely following Debian to that degree and hence it was an easier process for him to produce that image. We exchanged emails about when we were going to have all of the packages built for Raspbian and more book keeping stuff than actively discussing the creation of the Foundation's image.
+
+
+Q5 On the Foundation's Raspbian forum you state that you bought a "Freescale iMX53 Quick Start Board with a ARM Cortex-A8 1 GHz processor and 1GB" to kick things off. This was back in March before RPi was released. How suitable did this board prove to be as a build platform?
+
+I have 8 Freescale iMX53 boards that are still being used today to build Raspbian packages. It could be better as they are limited to 1GB of RAM but it is a fairly fast system with a 1GHz ARMv7 processor. The main issue we are running into when building packages is that over the last few years some of these packages have grown to require enormous amounts of RAM to be linked to hundreds of megabytes of data which builds enormous in memory trees of data. What we are finding is that we are running into swap space because we are exceeding the 1GB of RAM. When we monitored this we found it was going up to 1.5-2GB of swap space on these devices. Compared to a run of the mill modern PC with say 4GB of memory on which a package may take anywhere from 20 minutes to maybe an hour to build it would take upwards of 20 to 30 hours to build on these beefy ARM systems. This is why we have 8 of these systems running. Where the 8 systems where really required was back in May and June when we were building the bulk of the packages for Raspbian. We had to essentially get about 18000 source packages built in order to get the bulk of Debian ported over and that translates into building just under 38000 binary packages. It was during that time that we really needed as many ARM systems as possible running in parallel because we were building in the order of several hundred packages per day and if one of these servers gets caught up building one of these larger packages such as Firefox and we only had one system we would literally still be building packages today.
+
+Q3 How did you manage distributing the packages to be built across the 8 systems?
+
+First of all I am using as much as I can of Debian's own build systems to handle this. However one of the problems is that I came into this project with very limited experience of building operating systems and had to learn everything needed. I had been a software developer all my career but had never attempted any build on this scale. I am more of a developer than a build engineer and as a result of this project I now understand why companies have build engineers that just focus on building large software projects!
+
+
+[25:45] Qx How dependent were you on existing upstream work undertaken by the Linux community? Likewise how careful do you need to be that future work on Raspbian does not break something downstream, such as the Foundation's image or other distributions based on Raspbian?
+
+I think that it is a leap of faith on my part that upstream to me in Debian, with the work that they have done on ARM hardfloat, is and will continue to be stable. Peter Green, who is a Debian developer, was really adamant, and I think correctly so, that Raspian was as close to a mirror of an official Debian release as possible without actually being an official release. I think that as long as we maintain that commitment with Raspbian, which I think we are doing, and as Debian has such a good reputation, the Foundation and others will be able to keep using Raspbian. 
+
+By keeping Raspbian so close to Debian it reduces the risk of just two guys working on this. Due to the influence of Peter Green everything we have done is completely open. If we were to suddenly close up shop tomorrow all of our work is out there as Raspbian is mirrored in 30-40 places around world. Therefore someone who has a knowledge of building Debian could keep maintaining it. Therefore it is a low risk to the Foundation as they can take this if needed.
+
+--HERE--
+[30m] Raspian would not be at all possible if the group that created armhf within Debian had not done their work about 18 months prior to the start of our work. They had essentially a Debian soft float and there were people within the Debian community who were greatly interested in doing the hard float version of Debian and their work, which was the work of about a half dozen people or more in the community. They went through the enormous effort of going through all the packages and going from a soft float version to a hard float version of all these packages, and working with the package maintainers of thousands of packages trying to support armhf. This was an enormous effort on their part. If that effort had not happened there would have been no way we could have even have begun to make a dent in going from Debian soft float to hard float. The only thing that made it possible was all of that upstream work had occurred. The only downside was that they decided to go with ARMv7 rather than ARMv6 just because when they made their decisions over which platforms to support their really weren't many ARMv6 platforms out there to consider. The Raspberry Pi gained momentum after they had made that decision and put all of that work in. All of that previous work allowed us to go back and maybe for a small percent of their effort actually make an ARMv6 version of armhf available.
+
+Q5 With the Foundation's Raspbian distribution now supporting hard floating point and overclocking via Turbo Mode are there any other areas that are actively being looked at to further increase performance?
+
+[37m] Unfortunately I think we are maxxed out on the software side of things for performance. Short of replacing the core CPU with an ARMv7 would be to add more memory to the system. I think that were people are really hitting their heads on the ceiling with the Raspberry Pi is the 256MB of RAM. I have some ARM systems with 512MB RAM and that extra does make a significant difference, especially for some of the applications like browsers and for someone who wants a more desktop-like experience on the Raspberry Pi. (  Editor's note: As if Michael had read the Foundation's minds Raspberry Pi's have just started shipping with 512MB RAM - this article author received his upgraded Pi through the post on October 15th).
+
+[41m] Using a GUI for software is interesting as in general software efficiency has gone by the wayside. I always value lean and efficient use of memory for computation. Unfortunate the reality is that lots of RAM is needed for any GUI apps these days. Therefore more memory good, however this is not necessarily for education as it is good to learn to try to run applications in limited resources. Perhaps if systems like the Raspberry Pi had been available eight years ago we may have seen a lean branch of productivity software requiring less resources in general on all computer platforms.
+
+[50m] My first computer was TRC colour computer with 4KB of RAM back around 1979/1980 (MICHAEL - IS THIS CORRECT?). One of the things that made a major difference to me learning about computers and really moved me along was when a program like Turbo C or Turbo Pascal before that from Borland came out. One of the things that I am really disappointed about how the software world turned out is that anything beyond a command line to build software these days requires GUI environments that take up so much resources that mean that they are not usable on a Raspberry Pi. There really is not an equivalent of Turbo C or Turbo Pascal for the Raspberry Pi because those systems just went by the wayside as more memory became available. I think there is a huge opportunity to try to bring that back on the Raspberry Pi: something that could compile 50 software packages really fast in a command line type of environment but something that is a step up from a raw command line and make files.
+
+Q Do you think providing the Pi with limited memory actually encourages people to re-learn how to code efficiently given the multi-GB computers that are ubiquitous today? 
+Personally I actually think it is horrendous how software efficiency has gone by the wayside. As someone who is more of a systems engineer I have always valued lean, memory and resource efficient usage of computational resources and it is an unfortunate reality that for anyone who tries to run any type of desktop software on the Raspberry Pi that memory is probably the first issue that they hit. This is because of the nature of any type of GUI or desktop application is based on an attitude from the vendors of more and more memory and to a lesser degree CPU resources to run the software which has cast a shadow that the Raspberry Pi falls within. Perhaps if systems like the Raspberry Pi, which are by nature constrained in memory and resources that they have available to them were available 8 years ago perhaps we would have seen a branch of browsers and desktop productivity software that would have remained lean. I think that the Raspberry Pi is essentially equivalent to around a year 2000 PC and if that software was still available and had not experienced 10 years of bloatware I think that the Raspberry Pi desktop user experience would have been greatly different than what it is now.
+
+However for non-desktop application usage the Raspberry Pi effectively acts as a supercharged Arduino and memory is not an issue. 
+
+One of the things I was surprised about
+
+Q What other hardware changes?
+
+A hardware serial ATA port would be a great benefit for building packages as USB interfaces ultimately do not quite have the stability to run builds on the Raspberry Pi itself, in terms of it being a build server. However trying to turn the Raspberry Pi into a build server is not really what excites me. Instead I am excited in it being the next logical step in the overall DIY community from the Arduino. I really want to see the RAspberry Pi become cheaper and cheaper.
+
+Q Interest in Arduino and robotics? What are your plans in this direction?
+Right now I am interested in very small Linux systems. Part of my interest is in pursuing robotics and other things at lower price points. I don't really have any specific plans at this point. I am playing around and seeing what clicks.
+
+
+
+Q6 Where did the idea for Turbo Mode come from? Did it give you the performance boost you were hoping for?
+
+[~40m??] This was all done in the Kernel by Foundation and was their idea. Raspbian were not involved. DOES HE SAY ANYTHING ELSE ABOUT TURBO MODE?
+
+
+
+On the RPi Forum you mention it took about 24 hours to get a rebuilt version of gcc-4.6 running under Debian armhf. Clearly this project has taken a lot of your time. Obvious question really, but are you looking for more volunteers to assist?
+
+
+5 What have been the main challenges for the project?
+
+
+6 Would you do anything differently if you were starting the project again today?
+
+
+
+
+[39m] Wanted floating point in RPi for robotics. As a supercharged Arduino memory is overkill.
+
+
+[44m] primary interest in getting pkgs built. Therefore does not need vastly different h/w. A SATA port would be great. USB is ultimately not stable enough to run builds on RPi.
+
+[45m] Excitement in RPi is next step in DIY builder / Arduino community. Therefore is perfectly with where h/w is at now.
+
+[47m] Plans with robotics on RPi?
+Been in Silicon Valley for 20 years and has had 5 years with family. Interested in v.small Linux systems, hence RPi came up on radar. Interest is in pursuing robotics, trying to get Linux down to 5-10dollar devices. Playing around and seeing what clicks.
+
+
+[54m] US may be same experience of quality of candidates entering engineering professions. High level languages. Someone working in systems level work and not being able to anticipate what compiler is doing at on an instruction by instruction basis. 
+ 
+
+9 Raspbian is clearly proving popular (the "Start Here" post in the Raspbian section of the Rasperry Pi Foundation's forum has over 10000 views, and the "Debian Hard Float for RPi" post over 50000). When you started the Raspbian project did you think you would get that that level of interest?
+
+[1.02m]Suprised by this level of interest?
+If he had set out purposely with the goal to create Raspbian as it is would have been discouraged. His goal was to learn how hard this is and to create the OS. Pleasing 
+
+Qx What's next for Raspbian?
+
+[58m] For the last two modes we have been in maintenance mode: as Debian puts out their changes to packages we pull those down, and run them through our auto builder scripts that build the binary versions of those packages and distribute them out to the repositories. Personally, I have accomplished my goal with Raspbian of creating an ARMv6 armhf version of Debian. No real future ambitions for Raspbian other than maintenance, unless there are future issues. Peter may have other goals in the future.
+
+I am happy that Raspbian has enabled so many things in the Raspberry Pi community. It is also great that I have been able to give back to the Linux community and I hopes this will lead to thousands more Debian users in the future.
+
+ABOUT MICHAEL:
+Michael Thompson is a Computer Engineer with a diverse background in embedded systems design, handheld/mobile application development, PC application development and large scale Internet systems design. He is a serial entrepreneur who co-founded two previous companies. He is the founder and a lead developer for Raspbian, the leading operating system for the Raspberry Pi.
+

@@ -1,0 +1,240 @@
+Interrupts and Other Activities with GPIO Pins
+
+
+After some initial experiments where a Raspberry Pi operates LEDs and
+reads switches, when the "It works!" euphoria fades, astute
+users may understand there will be problems when they undertake to
+extend those simple programs to more complex environments.
+
+I discuss two such issues here: how to share GPIO resources among
+multiple applications, and use of interrupts to replace wasteful
+status check loops.
+
+There has been a frightful incidence of "Run this program as root."
+instructions published for the Raspberry Pi user.  This sounds to an
+experienced user rather like "Here, children: these are razor
+blades. Take them outside, and see what you can cut with them."
+
+Root privilege should be viewed as a last resort.  Its proper use is
+system creation and configuration - the establishment of a protected
+environment where faults in one program will not affect other
+applications, and cannot cause failure of the operating system.  At
+worst, a user program that errs should compromise only the resources
+allocated to that program.
+
+Linux has a large number of device drivers, programs typically part of
+the kernel that interface between hardware resources and application
+programs.  Examples are file systems, which expose user-friendly
+functions like open, read, and write, while they manage hardware
+access and maintain the necessary data structures to allocate and free
+disk space, share access in appropriate ways between multiple
+programs, and handle recovery after events such as power failures.
+
+Root privilege makes it easy to interfere with system activities.  If
+one is lucky, the result is immediate panic and the system crashes.
+In less fortunate circumstances, malicious software could be installed
+in a system: this software can then communicates over an Internet
+connection with criminals who seek personal information or might
+exploit your Raspberry Pi for nefarious activities.
+
+Linux has a general facility to manage GPIO resources.  It creates a
+convenient interface for user programs, protects GPIO resources used
+by device drivers such as I2C and SPI, and delivers pin-specific
+access so one application does not need to worry about what other
+programs do with other GPIO pins.  This individual pin interface is
+important, because without it every GPIO application would have to
+worry about race conditions with other applications that share a bank
+of GPIO pins (locks, interrupt management, or other complexities would
+be needed).
+
+The Linux GPIO facility uses files in the /sys/class/gpio/ directory.
+Yes, like many system configuration or control files, these files are
+owned by root.  I shall ignore this for now, to make description of
+the interface easier, but promise to return later and present a tool to
+encapsulate the privileged operation in a responsible way.
+
+The echo command is commonly used in shell procedures to display
+messages to standard output, or with output redirection to write to a
+file.  A simple example:
+
+  echo Hello there.
+
+writes the output "Hello there."  With output redirection:
+
+  echo Hello there. >file_01
+
+creates the file "file_01" that contains the same message.
+
+The echo command will be used for some examples of GPIO use.  Pin 23
+is used because it is convenient and easily accessible at
+terminal 16 of the 26-terminal Raspberry Pi header.  It is labeled
+GPIO_GEN4 on the Raspberry Pi schematic
+(http://www.raspberrypi.org/wp-content/uploads/2012/04/Raspberry-Pi-Schematics-R1.0.pdf).
+
+To create a user interface for pin 23, use sudo or, as root, execute:
+
+  echo 23 >/sys/class/gpio/export
+
+This causes the kernel to create a /sys/class/gpio/gpio23 directory
+which contains four files relevant to this discussion: active_low
+direction, edge, and value.  The initial values in these files (if there
+is no external connection to this pin) are:
+
+    active_low        0
+    direction         in
+    edge              none
+    value             0
+
+To make this an output pin:
+
+  echo out >/sys/class/gpio/gpio23/direction
+
+If the output value should be initialized first, before the output
+driver is enabled, one of the following may be used to set pin
+direction with an initial value:
+
+  echo  low >/sys/class/gpio/gpio23/direction
+  echo high >/sys/class/gpio/gpio23/direction
+
+To set this pin output on or off:
+
+  echo 1 >/sys/class/gpio/gpio23/value
+  echo 0 >/sys/class/gpio/gpio23/value
+
+To invert the pin logic:
+
+  echo 1 >/sys/class/gpio/gpio23/active_low
+
+Do this before reading an input or setting an output value.  When
+active_low is 1 (or anything other than 0) and value is set to 1, the
+pin is driven low, etc.
+
+How fast can this mechanism change GPIO pin values?  A simple python
+program http://ryniker.ods.org/raspberrypi/MagPi/gpio23-max.py will
+generate pulses at 19 kHz.  If this is written in C (see
+http://ryniker.ods.org/raspberrypi/MagPi/23-maxa.c) the frequency
+increases to roughly 120 kHz.  The actual frequency varies because the
+Raspberry Pi does other things that temporarily suspend the loop -
+clock maintenance, network activity, other user and system processes.
+
+As promised earlier, here is the program
+http://ryniker.ods.org/raspberrypi/MagPi/gpio_control.c that executes
+operations which require root privilege in order to export a GPIO pin
+for use by ordinary users. Comments at the beginning of the program
+describe how to compile and install it.  Once it is installed (by
+root), because of its "setuid" characteristic, when a user invokes it
+the program runs with an effective userid of root, therefore it has
+the privilege needed to export or unexport a GPIO pin, and set
+appropriate permissions for the files used to control that pin.
+
+Programs that execute with root privilege should be written by really
+paranoid programmers.  Most of the code in gpio_control.c simply
+checks that the arguments are reasonable, and tries to be informative
+if anything unusual happens.
+
+To use gpio_control to export pin 23 so all of the pin manipulations
+discussed earlier do not require root privilege, simply execute:
+
+  gpio_control 23 export
+
+gpio_control.c may be easily configured, before it is compiled, to
+allow GPIO access to all users or only users in the caller's group.
+Each of the 54 GPIO pins may be individually configured to permit or
+forbid export.
+
+The Raspberry Pi uses GPIO pin 16 to control the "Status OK" green
+LED.  If one tries to export GPIO pin 16, the operation fails because
+the kernel is using this resource:
+
+  ryniker@raspberrypi:~$ gpio_control 16 export
+  export failed: Device or resource busy
+
+Other kernel programs may acquire GPIO pins, which can make them
+unavailable to users.  This is good.  Little harm could come from a
+user turning the status LED on and off, but what about the kernel I2C
+driver?  It could easily suffer erratic failures if the pins it uses
+are changed in ways it cannot understand.  
+
+The kernel remembers the state of GPIO pins.  For example, suppose a
+pin is exported, set by the user as an output pin, then unexported.
+The userspace files disappear, but the pin remains an output pin with
+the last value set.  If this pin is again exported, the userspace
+files are recreated to manifest the saved state.
+
+The echo command is convenient to use in shell scripts, occasionally
+on the command line, but Python is much easier for real programs.  The
+dozen lines in gpio23-max.py should provide a simple example.
+
+Now that the basic elements of GPIO control have been exhibited, this
+facility can be used to replace the "infinite loop" operation, where a
+program repeatedly reads the value of an input signal and performs
+some operation when it changes, with a vastly more efficient program
+that only runs when the input signal changes.  With only one input,
+and absolutely nothing else to do until it changes, a loop may not be
+a problem.  However, such a loop wants to consume 100 percent of the
+CPU resource, and therefore competes aggressively with everything else
+that might want some piece of the Raspberry Pi.
+
+One can introduce a delay in the poll loop, say a "sleep 0.5" command
+to delay one-half second before starting the next loop iteration.
+This allows other activity to run during the sleep period, but means
+there is an average delay of one-quarter second before any change in
+the input is observed.  Shorter delay, faster response, more wasted
+CPU... ugly choice.
+
+As the number of inputs grows, and the number of responses to those
+inputs becomes larger and more varied, it often is necessary to manage
+tasks with different priorities.  Interrupts are the means to quickly
+connect an input such as "There is a chasm directly in front of the
+vehicle" to the response "Stop!".
+
+Another Python program
+http://ryniker.ods.org/raspberrypi/MagPi/interrupt_test23.py will
+illustrate GPIO interrupt handling.  This program configures pin 23 as
+an input, sets the pin's edge file to "both" so interrupts will occur
+for "falling" and "rising" transitions, then opens the pin's value
+file.  Invocation of select.poll() creates a polling object "po", then
+po.register() adds the GPIO pin's value file as one of the sources
+which can satisfy a subsequent po.poll() request.  This program uses
+only the one interrupt source, but other GPIO pins, and many other
+sources, can be registered with the poll object.  For instance, a pipe
+that connects to another process could be an interrupt source, or a
+socket that receives data over a network from a remote system.
+
+The second operand to po.register specifies which of three conditions
+will be recognized as interrupts.  The select.POLLPRI value specifies
+only "priority data to read" will cause an interrupt.  The other
+possible conditions - "data available" and "ready for output" - are
+always true for a GPIO pin, therefore a poll operation when either of
+these is enabled would always complete immediately.  If other
+interrupt sources are registered with po, they might use these
+conditions.
+
+Sometimes, the absence of an expected signal may be important.  The
+po.poll(60000) call will wait for an interrupt, but only for 60
+seconds (60,000 milliseconds), before it returns an empty list of
+interrupt signals to indicate it timed out.
+
+The kernel maintains the value file for a GPIO pin with two bytes of
+content: a 0 or 1 character to represent the pin's current value, and
+a newline character.  f.seek(0) resets the current location in the
+file to the beginning, so the value of the first character may be read
+again.
+
+Only a few GPIO pins are accessible on the Raspberry Pi, but several
+people have shown how inexpensive ICs such as MCP23017 can use the I2C
+interface to expand this number.  A design such as
+http://shop.ciseco.co.uk/k002-slice-of-pi-o/ can be used up to 8 times
+to add 128 digital I/O pins to a Raspberry Pi.  Use the MCP23017
+open-drain interrupt configuration to connect interrupt signals from
+multiple devices to a single GPIO pin.  A pull-up resistor to 3V3
+keeps the input high, until a connected device drives it low.  When an
+interrupt occurs, the interrupt handler has to read values from all
+the interrupt-generating devices to learn which have active interrupt
+signals (there may be several), launch the appropriate response
+programs, then clear all the interrupt requests (so the GPIO input
+returns to the high state) to allow the next interrupt to occur.
+
+
+Richard Ryniker
+ryniker@alum.mit.edu

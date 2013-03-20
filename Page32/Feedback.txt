@@ -1,0 +1,55 @@
+Dear Sir,
+
+Having looked around for the Big Trak on the internet, I found those on Amazon but apparently the model seems more recent than yours. Secondly, you mention a robot arm to be mounted. Could you please specify which robot arm? and where to get it?
+Awaiting your kind reply, I remain,
+
+Sincerely Yours,
+
+Richard
+
+Answer
+
+Thanks for your interest in this article. Skutter is a long-term series, with the first article published in issue 1 of The MagPi. This contains some background information:
+"The robotic arm kit called the “OWI Edge” is
+currently available from Maplin electronics
+and it uses a simple USB interface to control
+it."
+
+I believe this is a link to the product: http://www.maplin.co.uk/robotic-arm-kit-with-usb-pc-interface-266257.
+
+Morphy may be using an older model of the Big Trak, I'm not sure where you could get hold of one.
+
+
+-----------------------
+
+Is it going to be possible to view the mag on an iPad in the near future or am I missing the point?
+
+Best wishes
+
+John
+
+Answer
+You can currently view it on an iPad, by downloading the pdf, and viewing it in iBooks. We are currently talking to a developer regarding a newsstand app.
+------------------------
+
+I am old enough to remember the US DoD competition that resulted in the 1980 “Ada is Green” announcement.  The competitors for the compiler were colour coded and Modula is reputed to have come second.  So I have always wondered why Ada did not get into home computers and PCs.  The compiled language should have been Ada not ‘C’.  That is probably so that to be ‘Safe’ in everything from Air Traffic Control systems to Nuclear reactors, they have to control the development of the language by having both a compliance and a non-compliance standard.    But then I suppose Delphi and Lazarus are not that far off Visual Ada.
+ 
+So from that, I would like to see articles that do not just outline Ada as a programming language, but cover what can lead to dangerous bugs in computer programs.  Would you feel comfortable flying on an aeroplane programmed in Visual Basic ?
+ 
+Dave
+
+------------------------
+
+
+Hi,
+As a new user of the Raspberry Pi I'm very interested in your excellent magazine.  I have had no difficulty reading your Issues 1 to 6 on my desktop computer that uses Linux Mint 13.
+Imagine my disappointment when I found that, of the six issues, I can only open Issue 3 on my brand new Raspberry Pi with the recommended Raspbian "wheezy" (2012-09-18) operating system.
+Not being familiar with the MuPDF program that Raspbian "wheezy" uses, I thought I'd better check by installing and testing MuPDF on my Linux Mint machine.
+
+Result: 
+MagPi Issues 1,2,4,5 & 6 open without a problem using MuPDF on my Linux machine but they do not open on my Raspberry Pi.  Issue 3 opens OK on both machines.
+This is possibly not your technical problem but I thought you would want to know that a significant and growing number of Raspberry Pi owners cannot read your magazine.
+Regards,
+Lloyd
+
+-------------------------

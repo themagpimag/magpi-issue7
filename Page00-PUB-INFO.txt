@@ -1,0 +1,7 @@
+Files generated for printing. Week of 5th Feb 2013 by meltwater.
+Using the PDF publishing guide on dropbox, and a RPi.
+Errata Comments implemented where suitable.
+
+Note: Only files updated due to Errata have been re-generated.
+
+Additional generation of files, started week 4th March 2013 by meltwater
